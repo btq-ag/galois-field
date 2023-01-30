@@ -37,14 +37,14 @@ import Data.Field.Galois.Frobenius (frobenius)
 
 -- | Irreducible monic polynomial @f(X)@ of extension field.
 class GaloisField k => IrreducibleMonic p k where
-  {-# MINIMAL poly #-}
+  -- {-# MINIMAL poly #-}
   -- | Polynomial @f(X)@.
   poly :: Extension p k -> VPoly k
 
 -- | Extension fields @GF(p^q)[X]/\<f(X)\>@ for @p@ prime, @q@ positive, and
 -- @f(X)@ irreducible monic in @GF(p^q)[X]@.
 class GaloisField k => ExtensionField k where
-  {-# MINIMAL fromE #-}
+  -- {-# MINIMAL fromE #-}
   -- | Convert from @GF(p^q)[X]/\<f(X)\>@ to @GF(p^q)[X]@.
   fromE :: (GaloisField l, IrreducibleMonic p l, k ~ Extension p l) => k -> [l]
 
@@ -55,18 +55,18 @@ newtype Extension p k = E (VPoly k)
 -- Extension fields are convertible.
 instance IrreducibleMonic p k => ExtensionField (Extension p k) where
   fromE = toList
-  {-# INLINABLE fromE #-}
+  -- {-# INLINABLE fromE #-}
 
 -- Extension fields are Galois fields.
 instance IrreducibleMonic p k => GaloisField (Extension p k) where
   char         = const $ char (witness :: k)
-  {-# INLINABLE char #-}
+  -- {-# INLINABLE char #-}
   deg          = (deg (witness :: k) *) . deg'
-  {-# INLINABLE deg #-}
+  -- {-# INLINABLE deg #-}
   frob y@(E x) = case frobenius (unPoly x) (unPoly $ poly y) of
     Just z  -> E $ toPoly z
     Nothing -> pow y $ char y
-  {-# INLINABLE frob #-}
+  -- {-# INLINABLE frob #-}
 
 {-# RULES "Extension.pow"
   forall (k :: IrreducibleMonic p k => Extension p k) n . (^) k n = pow k n
@@ -79,23 +79,23 @@ instance IrreducibleMonic p k => GaloisField (Extension p k) where
 -- Extension fields are multiplicative groups.
 instance IrreducibleMonic p k => Group (Extension p k) where
   invert        = recip
-  {-# INLINE invert #-}
+  -- {-# INLINE invert #-}
   pow x n
     | n >= 0    = x ^ n
     | otherwise = recip x ^ P.negate n
-  {-# INLINE pow #-}
+  -- {-# INLINE pow #-}
 
 -- Extension fields are multiplicative monoids.
 instance IrreducibleMonic p k => Monoid (Extension p k) where
   mempty = E 1
-  {-# INLINE mempty #-}
+  -- {-# INLINE mempty #-}
 
 -- Extension fields are multiplicative semigroups.
 instance IrreducibleMonic p k => Semigroup (Extension p k) where
   (<>)   = (*)
-  {-# INLINE (<>) #-}
+  -- {-# INLINE (<>) #-}
   stimes = flip pow
-  {-# INLINE stimes #-}
+  -- {-# INLINE stimes #-}
 
 -------------------------------------------------------------------------------
 -- Numeric instances
@@ -108,22 +108,22 @@ instance IrreducibleMonic p k => Fractional (Extension p k) where
     _           -> divZeroError
     where
       (g, y) = gcdExt x $ poly (witness :: Extension p k)
-  {-# INLINABLE recip #-}
+  -- {-# INLINABLE recip #-}
   fromRational rat = fromInteger (numerator rat) / fromInteger (denominator rat)
-  {-# INLINABLE fromRational #-}
+  -- {-# INLINABLE fromRational #-}
 
 -- Extension fields are numeric.
 instance IrreducibleMonic p k => Num (Extension p k) where
   E x + E y    = E $ x + y
-  {-# INLINE (+) #-}
+  -- {-# INLINE (+) #-}
   E x * E y    = E $ rem (x * y) $ poly (witness :: Extension p k)
-  {-# INLINABLE (*) #-}
+  -- {-# INLINABLE (*) #-}
   E x - E y    = E $ x - y
-  {-# INLINE (-) #-}
+  -- {-# INLINE (-) #-}
   negate (E x) = E $ P.negate x
-  {-# INLINE negate #-}
+  -- {-# INLINE negate #-}
   fromInteger  = E . fromInteger
-  {-# INLINABLE fromInteger #-}
+  -- {-# INLINABLE fromInteger #-}
   abs          = panic "Extension.abs: not implemented."
   signum       = panic "Extension.signum: not implemented."
 
@@ -135,7 +135,7 @@ instance IrreducibleMonic p k => Num (Extension p k) where
 instance IrreducibleMonic p k => Euclidean (Extension p k) where
   degree  = panic "Extension.degree: not implemented."
   quotRem = (flip (,) 0 .) . (/)
-  {-# INLINE quotRem #-}
+  -- {-# INLINE quotRem #-}
 
 -- Extension fields are fields.
 instance IrreducibleMonic p k => Field (Extension p k)
@@ -146,20 +146,20 @@ instance IrreducibleMonic p k => GcdDomain (Extension p k)
 -- Extension fields are rings.
 instance IrreducibleMonic p k => Ring (Extension p k) where
   negate = P.negate
-  {-# INLINE negate #-}
+  -- {-# INLINE negate #-}
 
 -- Extension fields are semirings.
 instance IrreducibleMonic p k => Semiring (Extension p k) where
   fromNatural = fromIntegral
-  {-# INLINABLE fromNatural #-}
+  -- {-# INLINABLE fromNatural #-}
   one         = E 1
-  {-# INLINE one #-}
+  -- {-# INLINE one #-}
   plus        = (+)
-  {-# INLINE plus #-}
+  -- {-# INLINE plus #-}
   times       = (*)
-  {-# INLINE times #-}
+  -- {-# INLINE times #-}
   zero        = E 0
-  {-# INLINE zero #-}
+  -- {-# INLINE zero #-}
 
 -------------------------------------------------------------------------------
 -- Other instances
@@ -168,15 +168,15 @@ instance IrreducibleMonic p k => Semiring (Extension p k) where
 -- Extension fields are arbitrary.
 instance IrreducibleMonic p k => Arbitrary (Extension p k) where
   arbitrary = fromList <$> vector (fromIntegral $ deg' (witness :: Extension p k))
-  {-# INLINABLE arbitrary #-}
+  -- {-# INLINABLE arbitrary #-}
 
 -- Extension fields are lists.
 instance IrreducibleMonic p k => IsList (Extension p k) where
   type instance Item (Extension p k) = k
   fromList     = E . fromList
-  {-# INLINABLE fromList #-}
+  -- {-# INLINABLE fromList #-}
   toList (E x) = toList $ unPoly x
-  {-# INLINABLE toList #-}
+  -- {-# INLINABLE toList #-}
 
 -- Extension fields are pretty.
 instance IrreducibleMonic p k => Pretty (Extension p k) where
@@ -190,7 +190,7 @@ instance IrreducibleMonic p k => Random (Extension p k) where
         | n <= 0    = (xs, g)
         | otherwise = case random g of
         (x, g') -> unfold (n - 1) (x : xs) g'
-  {-# INLINABLE random #-}
+  -- {-# INLINABLE random #-}
   randomR = panic "Extension.randomR: not implemented."
 
 -------------------------------------------------------------------------------
