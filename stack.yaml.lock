@@ -5,12 +5,12 @@
 
 packages:
 - completed:
-    hackage: protolude-0.3.2@sha256:2a38b3dad40d238ab644e234b692c8911423f9d3ed0e36b62287c4a698d92cd1,2240
+    hackage: protolude-0.3.3@sha256:20655b56593a78eb0599e0c6108e590e7fbf8f890c0da7d40fb3411a941e7d49,2239
     pantry-tree:
-      sha256: a36d2912ac552d950ba4476de7d950b56b82dd28e48b9f4d0efee938f10bc525
+      sha256: 9f5de34c74c630abf7a5c31d1b8b56f4c032ac90b3b2033cbb8cfa778bf7e0ec
       size: 1594
   original:
-    hackage: protolude-0.3.2
+    hackage: protolude-0.3.3
 snapshots:
 - completed:
     sha256: 8bcce0b4f5671ea04691477f5af759b497b8892f998768d6eb01c64c58d41d7c

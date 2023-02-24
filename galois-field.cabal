@@ -61,7 +61,7 @@ library
     , mod             ^>=0.1.0
     , MonadRandom     ^>=0.5.1
     , poly            >=0.3.2  && <0.6
-    , protolude       ^>=0.3
+    , protolude       ^>=0.3.3
     , QuickCheck      >=2.13   && <2.15
     , semirings       ^>=0.6
     , vector          ^>=0.12.0

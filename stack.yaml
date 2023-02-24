@@ -6,6 +6,6 @@ extra-deps:
   # - poly-0.4.0.0
   # - semirings-0.5.3
   # - vector-algorithms-0.8.0.3
-  - protolude-0.3.2
+  - protolude-0.3.3
   # - integer-gmp-1.0.3.0
   # - QuickCheck-2.14
